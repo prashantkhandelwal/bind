@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"log"
 	"net/http"
 	"strings"
 
@@ -13,13 +12,11 @@ func WebExtract() gin.HandlerFunc {
 	fn := func(g *gin.Context) {
 
 		url := g.Query("url")
+		w := make(chan webext.WebData)
 
 		if len(strings.TrimSpace(url)) > 0 {
-			w, err := webext.Extract(url)
-			if err != nil {
-				log.Fatalf("ERROR: %s", err.Error())
-			}
-			g.JSON(http.StatusOK, gin.H{"result": &w})
+			go webext.ExtractMeta(url, w)
+			g.JSON(http.StatusOK, gin.H{"result": <-w})
 		} else {
 			g.JSON(http.StatusBadRequest, gin.H{"result": "Error: Url cannot be blank."})
 		}
