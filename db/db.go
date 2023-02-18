@@ -6,19 +6,45 @@ import (
 	"time"
 
 	_ "github.com/mattn/go-sqlite3"
+	"github.com/prashantkhandelwal/bind/webext"
 )
 
-type Bookmark struct {
-	id            uint
-	url           string
-	title         string
-	description   string
-	snapshot      string
-	date_added    time.Time
-	date_modified time.Time
-	tags          string
+func db() (*sql.DB, error) {
+	db, err := sql.Open("sqlite3", "bind.db")
+
+	if err != nil {
+		log.Fatal("ERROR:Database: Error in opening database.")
+	}
+
+	return db, nil
 }
 
+func Save(b *Bookmark) (bool, error) {
+
+	db, _ := db()
+
+	snap, err := webext.Snap(b.Url)
+	if err != nil {
+		log.Fatal("ERROR:Database:Save() - Error in getting the snap for the url")
+	}
+
+	_, err = db.Exec("insert into Bookmarks values(null,?,?,?,?,?,null,?);",
+		b.Url,
+		b.Title,
+		b.Description,
+		snap,
+		time.Now(),
+		b.Tags)
+
+	if err != nil {
+		log.Fatalf("ERROR:Database:Save - Unable to save the bookmark - %s", b.Url)
+		return false, err
+	}
+
+	return true, nil
+}
+
+/*
 func AddTag() (bool, error) {
 	db, err := sql.Open("sqlite3", "bind.db")
 	if err != nil {
@@ -38,5 +64,6 @@ func AddTag() (bool, error) {
 		log.Fatal("Database: Error in saving Tags.")
 		return false, err
 	}
+
 	return true, nil
-}
+}*/

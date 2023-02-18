@@ -23,10 +23,26 @@ func InitDB() error {
 
 		log.Println("Database: bind.db created!")
 
-		q := `CREATE TABLE Bookmarks
-				(id INTEGER PRIMARY KEY AUTOINCREMENT, url TEXT, title TEXT, description TEXT, snapshot TEXT, date_added DATETIME, date_modified DATETIME, tags INTEGER);
-			  CREATE TABLE Tags (id INTEGER PRIMARY KEY AUTOINCREMENT, bookmark_id INT NOT NULL, tag TEXT)
-				`
+		//q := `CREATE TABLE Bookmarks
+		//		(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, url TEXT NOT NULL, title TEXT NULL, description TEXT NULL, snapshot TEXT NULL, date_added DATETIME, date_modified DATETIME NULL, tags INTEGER NULL);
+		q := `CREATE TABLE "Config" (
+					"id"	INTEGER NOT NULL UNIQUE,
+					"key"	TEXT NOT NULL UNIQUE,
+					"value"	TEXT NOT NULL,
+					PRIMARY KEY("id" AUTOINCREMENT)
+				);
+				CREATE TABLE "Bookmarks" (
+					"id"	INTEGER NOT NULL UNIQUE,
+					"url"	TEXT NOT NULL,
+					"title"	BLOB NOT NULL,
+					"description"	TEXT,
+					"snapshot"	REAL,
+					"date_added"	DATETIME NOT NULL,
+					"date_modified"	DATETIME,
+					"tags"	INTEGER,
+					PRIMARY KEY("id" AUTOINCREMENT)
+				);`
+
 		_, err = db.Exec(q)
 		if err != nil {
 			log.Fatal("Database: Error in setting up database tables.")
