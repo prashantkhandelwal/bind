@@ -28,7 +28,7 @@ func Save(b *Bookmark) (bool, error) {
 		log.Fatal("ERROR:Database:Save() - Error in getting the snap for the url")
 	}
 
-	_, err = db.Exec("insert into Bookmarks values(null,?,?,?,?,?,null,?);",
+	_, err = db.Exec("INSERT INTO Bookmarks VALUES(NULL,?,?,?,?,?,NULL,?);",
 		b.Url,
 		b.Title,
 		b.Description,

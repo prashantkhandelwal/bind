@@ -5,6 +5,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
 	"github.com/prashantkhandelwal/bind/config"
 	"github.com/prashantkhandelwal/bind/server/handlers"
@@ -45,9 +46,19 @@ func Run() {
 	}
 
 	router := gin.Default()
+
+	embedFS := EmbedFolder(Ui, "ui", true)
+	router.Use(static.Serve("/", embedFS))
+
 	router.GET("/ping", handlers.Ping)
 	router.GET("/web/extract/", handlers.WebExtract())
 	router.POST("/save", handlers.SaveBookmark())
+
+	router.NoRoute(func(c *gin.Context) {
+		c.JSON(404, gin.H{
+			"code": "PAGE_NOT_FOUND", "message": "Page not found",
+		})
+	})
 
 	err = router.Run(":" + port)
 	if err != nil {

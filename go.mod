@@ -5,6 +5,7 @@ go 1.18
 require (
 	github.com/chromedp/cdproto v0.0.0-20230213000208-1903a0cd6c4c
 	github.com/chromedp/chromedp v0.8.7
+	github.com/gin-gonic/contrib v0.0.0-20221130124618-7e01895a63f2
 	github.com/gin-gonic/gin v1.8.2
 	github.com/mattn/go-sqlite3 v1.14.16
 	gopkg.in/yaml.v3 v3.0.1
