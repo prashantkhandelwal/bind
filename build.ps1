@@ -4,19 +4,22 @@
 # then change it to `Process`
 
 $build_path = '.\webui\build\*'
-$dest_build = '.\server\ui\'
+$dest_build = '.\server\ui'
 $web_dir = 'webui'
 $build_folder_name = 'build'
 $binary_name = 'bind'
 $release_dir = 'release'
 
 Remove-Item $dest_build -Recurse
-Remove-Item $release_dir -Recurse
+
+if (Test-Path -Path $release_dir) {
+    Remove-Item $release_dir -Recurse
+}
 
 if (Test-Path -Path $dest_build) {
     "Path exists!"
 } else {
-    New-Item -Path '.\server\ui' -ItemType Directory
+    New-Item -Path $dest_build -ItemType Directory
 }
 
 cd $web_dir
