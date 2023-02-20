@@ -23,6 +23,8 @@ func Save(b *Bookmark) (bool, error) {
 
 	db, _ := db()
 
+	defer db.Close()
+
 	snap, err := webext.Snap(b.Url)
 	if err != nil {
 		log.Fatal("ERROR:Database:Save() - Error in getting the snap for the url")

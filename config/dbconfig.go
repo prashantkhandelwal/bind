@@ -26,7 +26,7 @@ func InitDB() error {
 		//q := `CREATE TABLE Bookmarks
 		//		(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, url TEXT NOT NULL, title TEXT NULL, description TEXT NULL, snapshot TEXT NULL, date_added DATETIME, date_modified DATETIME NULL, tags INTEGER NULL);
 		q := `CREATE TABLE "config" (
-					"id"	INTEGER NOT NULL UNIQUE,
+					"id"	INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
 					"key"	TEXT NOT NULL UNIQUE,
 					"value"	TEXT NOT NULL,
 					PRIMARY KEY("id" AUTOINCREMENT)
