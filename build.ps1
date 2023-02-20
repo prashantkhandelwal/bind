@@ -10,7 +10,9 @@ $build_folder_name = 'build'
 $binary_name = 'bind'
 $release_dir = 'release'
 
-Remove-Item $dest_build -Recurse
+if (Test-Path -Path $dest_build) {
+    Remove-Item $dest_build -Recurse
+}
 
 if (Test-Path -Path $release_dir) {
     Remove-Item $release_dir -Recurse
