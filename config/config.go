@@ -9,24 +9,22 @@ import (
 )
 
 type Server struct {
-	PORT       string `yaml:"port"`
-	EnableLogs bool   `yaml:"enableLogs"`
+	PORT      string `yaml:"port"`
+	DebugLogs bool   `yaml:"debugLogs"`
 }
 
 type Config struct {
 	Environment string
 	Server      Server
-	Logging     bool
 }
 
 func (c *Config) defaults() *Config {
 	config := &Config{
 		Environment: "Debug",
 		Server: Server{
-			PORT:       "8989",
-			EnableLogs: false,
+			PORT:      "8989",
+			DebugLogs: false,
 		},
-		Logging: false,
 	}
 
 	return config

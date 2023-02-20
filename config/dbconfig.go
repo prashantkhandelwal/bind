@@ -25,13 +25,13 @@ func InitDB() error {
 
 		//q := `CREATE TABLE Bookmarks
 		//		(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, url TEXT NOT NULL, title TEXT NULL, description TEXT NULL, snapshot TEXT NULL, date_added DATETIME, date_modified DATETIME NULL, tags INTEGER NULL);
-		q := `CREATE TABLE "Config" (
+		q := `CREATE TABLE "config" (
 					"id"	INTEGER NOT NULL UNIQUE,
 					"key"	TEXT NOT NULL UNIQUE,
 					"value"	TEXT NOT NULL,
 					PRIMARY KEY("id" AUTOINCREMENT)
 				);
-				CREATE TABLE "Bookmarks" (
+				CREATE TABLE "bookmarks" (
 					"id"	INTEGER NOT NULL UNIQUE,
 					"url"	TEXT NOT NULL,
 					"title"	BLOB NOT NULL,
@@ -40,11 +40,17 @@ func InitDB() error {
 					"date_added"	DATETIME NOT NULL,
 					"date_modified"	DATETIME,
 					"tags"	INTEGER,
+					"is_archived"	INTEGER NOT NULL,
 					PRIMARY KEY("id" AUTOINCREMENT)
 				);`
 
 		_, err = db.Exec(q)
 		if err != nil {
+			db.Close()
+			err := os.Remove("bind.db")
+			if err != nil {
+				log.Fatalf("Setup failed - Cannot delete database %s", err)
+			}
 			log.Fatal("Database: Error in setting up database tables.")
 			return err
 		}
