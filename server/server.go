@@ -11,7 +11,7 @@ import (
 	"github.com/prashantkhandelwal/bind/server/handlers"
 )
 
-func Run() {
+func Run(c *config.Config) {
 
 	if _, err := os.Stat("data"); err != nil {
 		log.Println("\"data\" directory not found!....Creating")
@@ -27,13 +27,7 @@ func Run() {
 		panic(err)
 	}
 
-	c, err := config.InitConfig()
-	if err != nil {
-		log.Fatalf("ERROR: Cannot load configuration - %v", err.Error())
-		panic(err)
-	}
-
-	port := c.Server.PORT
+	port := c.Port
 
 	if c.Environment != "" {
 		if strings.ToLower(c.Environment) == "release" {
