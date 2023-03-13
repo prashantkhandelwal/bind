@@ -50,6 +50,9 @@ func Run() {
 	embedFS := EmbedFolder(Ui, "ui", true)
 	router.Use(static.Serve("/", embedFS))
 
+	// User
+	//router.POST("/login", handlers.Login())
+
 	router.GET("/ping", handlers.Ping)
 	router.GET("/web/extract/", handlers.WebExtract())
 	router.POST("/save", handlers.SaveBookmark())

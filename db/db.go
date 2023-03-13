@@ -19,31 +19,52 @@ func db() (*sql.DB, error) {
 	return db, nil
 }
 
-func Save(b *Bookmark) (bool, error) {
+func GetSnap(id int64, url string) (bool, error) {
+	db, _ := db()
+
+	defer db.Close()
+
+	snap, err := webext.Snap(url)
+	if err != nil {
+		log.Fatal("ERROR:Database:Save() - Error in getting the snap for the url")
+	}
+
+	_, err = db.Exec("UPDATE Bookmarks SET snapshot=? where id=?", snap, id)
+	if err != nil {
+		log.Fatalf("ERROR:Database:Update - Unable to update the snapshot of the bookmark url - %s - %s", url, err.Error())
+		return false, err
+	}
+
+	return true, nil
+}
+
+func Save(b *Bookmark) (int64, error) {
 
 	db, _ := db()
 
 	defer db.Close()
 
-	snap, err := webext.Snap(b.Url)
-	if err != nil {
-		log.Fatal("ERROR:Database:Save() - Error in getting the snap for the url")
-	}
-
-	_, err = db.Exec("INSERT INTO Bookmarks VALUES(NULL,?,?,?,?,?,NULL,?);",
+	result, err := db.Exec("INSERT INTO Bookmarks VALUES(NULL,?,?,?,NULL,?,NULL,?,?);",
 		b.Url,
 		b.Title,
 		b.Description,
-		snap,
+		//snap,
 		time.Now(),
-		b.Tags)
+		b.Tags,
+		false)
 
 	if err != nil {
-		log.Fatalf("ERROR:Database:Save - Unable to save the bookmark - %s", b.Url)
-		return false, err
+		log.Fatalf("ERROR:Database:Save - Unable to save the bookmark - %s - %s", b.Url, err.Error())
+		return 0, err
 	}
 
-	return true, nil
+	id, err := result.LastInsertId()
+	if err != nil {
+		log.Fatalf("ERROR:Database:Save - Unable to get the bookmark id - %s - %s", b.Url, err.Error())
+		return 0, nil
+	}
+
+	return id, nil
 }
 
 /*

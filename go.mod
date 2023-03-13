@@ -7,6 +7,7 @@ require (
 	github.com/chromedp/chromedp v0.8.7
 	github.com/gin-gonic/contrib v0.0.0-20221130124618-7e01895a63f2
 	github.com/gin-gonic/gin v1.8.2
+	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/mattn/go-sqlite3 v1.14.16
 	gopkg.in/yaml.v3 v3.0.1
 )

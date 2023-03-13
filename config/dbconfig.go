@@ -9,7 +9,7 @@ import (
 )
 
 func InitDB() error {
-	if _, err := os.Stat("./bind.db"); err != nil {
+	if _, err := os.Stat("bind.db"); err != nil {
 
 		log.Println("Database: bind.db does not exist....Creating")
 
@@ -24,8 +24,8 @@ func InitDB() error {
 		log.Println("Database: bind.db created!")
 
 		q := `CREATE TABLE "config" (
-					"id"	INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
-					"key"	TEXT NOT NULL UNIQUE,
+					"id"	INTEGER NOT NULL UNIQUE,
+					"key"	TEXT NOT NULL,
 					"value"	TEXT NOT NULL,
 					PRIMARY KEY("id" AUTOINCREMENT)
 				);
@@ -45,11 +45,11 @@ func InitDB() error {
 		_, err = db.Exec(q)
 		if err != nil {
 			db.Close()
-			err := os.Remove("bind.db")
-			if err != nil {
-				log.Fatalf("Setup failed - Cannot delete database %s", err)
-			}
-			log.Fatal("Database: Error in setting up database tables.")
+			// err := os.Remove("bind.db")
+			// if err != nil {
+			// 	log.Fatalf("Setup failed - Cannot delete database %s", err)
+			// }
+			log.Fatalf("Database: Error in setting up database tables. - %s", err.Error())
 			return err
 		}
 
