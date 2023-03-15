@@ -31,6 +31,7 @@ func Run(c *config.Config) {
 
 	if c.Environment != "" {
 		if strings.ToLower(c.Environment) == "release" {
+			log.Printf("Using environment: %v\n", c.Environment)
 			gin.SetMode(gin.ReleaseMode)
 		} else {
 			gin.SetMode(gin.DebugMode)
@@ -43,6 +44,7 @@ func Run(c *config.Config) {
 
 	embedFS := EmbedFolder(Ui, "ui", true)
 	router.Use(static.Serve("/", embedFS))
+	log.Printf("Server started on port: %v\n", port)
 
 	// User
 	//router.POST("/login", handlers.Login())

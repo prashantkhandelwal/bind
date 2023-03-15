@@ -17,6 +17,9 @@
 # Ignore Visual Studio Code settings folder.
 .vs
 
+bind.db
 webui/node_modules
 release
 config.yml
+data/
+server/ui/
