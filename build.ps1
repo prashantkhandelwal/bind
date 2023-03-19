@@ -53,7 +53,7 @@ Write-Output("Build for Windows-amd64 done!")
 Write-Output("Building for Linux-amd64...")
 SET GOARCH=amd64
 SET GOOS=linux
-go build -o release/win-amd64/$binary_name-linux_amd64
+go build -o release/linux-amd64/$binary_name-linux_amd64
 Write-Output("Build for Linux-amd64 done!")
 
 SET GOOS=windows
