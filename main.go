@@ -19,5 +19,5 @@ func main() {
 		Port:        *port,
 	}
 
-	go server.Run(&config)
+	server.Run(&config)
 }
